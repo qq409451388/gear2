@@ -1,0 +1,16 @@
+{
+	"poethan" : {
+		"host":"127.0.0.1",
+		"userName":"root",
+		"passWord":"poethan",
+		"charset":"utf8",
+		"port":3306
+	},
+	"default" : {
+		"host":"127.0.0.1",
+		"userName":"root",
+		"passWord":"poethan",
+		"charset":"utf8",
+		"port":3306
+	}
+}
