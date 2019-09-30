@@ -1,4 +1,5 @@
 <?php
+namespace gear\untils;
 class Logger
 {
     const LOG_PATH = LIB_PATH.'/logs/';

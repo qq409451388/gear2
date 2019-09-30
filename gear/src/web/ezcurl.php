@@ -1,5 +1,5 @@
 <?php
-class EzCurl implements IProxy
+class EzCurl
 { 
     private $ch;  
     private $url;

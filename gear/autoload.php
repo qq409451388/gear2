@@ -1,12 +1,9 @@
 <?php
-/*
-	未加载类之前定义全局常量
- */
-const LIB_PATH = __DIR__;
+const LIB_PATH = __DIR__.'/src';
 
 //dev prod
 const ENV = 'dev';
-function getFilePaths($path = __DIR__, &$hash = []){
+function getFilePaths($path = __DIR__, $folder = 'gear', &$hash = []){
 	//过滤掉点和点点
 	$map = array_filter(scandir($path), function($var){
         return $var[0] != '.';
@@ -17,29 +14,36 @@ function getFilePaths($path = __DIR__, &$hash = []){
 			if($item == '.' || $item == '..'){
 				continue;
 			}
-			getFilePaths($curPath, $hash);
+			$tmpFolder = $folder.'\\'.$item;
+			getFilePaths($curPath, $tmpFolder, $hash);
 		}
+		if(false == strpos($item,".php")){
+		    continue;
+        }
 		if(is_file($curPath)){
-			$hash[strtolower(str_replace('.php','',$item))] = $curPath;
+		    $className = $folder.'\\'.$item;
+		    $className = strtolower(str_replace('.php','',$className));
+			$hash[$className] = $curPath;
 		}
 	}
 	return $hash;
 }
 
 function getFilePathHash(){
-	$file = __DIR__.'/pathCache.json';
-	if(ENV != 'dev' && file_exists($file)){
-		return json_decode(file_get_contents($file), true);
+	$file = __DIR__.'/pathCache.php';
+	if(file_exists($file) && ENV != 'dev'){
+        return include($file);
 	}else{
 		$hash = [];
-        getFilePaths(LIB_PATH, $hash);
-		file_put_contents($file, json_encode($hash));
-		return $hash;
+        getFilePaths(LIB_PATH, 'gear',$hash);
+        file_put_contents(__DIR__."/pathCache.php", "<?php return ".var_export($hash, true).';');
+        return $hash;
 	}
 }
 $hash = getFilePathHash();
 spl_autoload_register(function ($className) use($hash){
-    $filePath = empty($hash[strtolower($className)]) ? '' : $hash[strtolower($className)];
+    $className = strtolower($className);
+    $filePath = empty($hash[$className]) ? '' : $hash[strtolower($className)];
 
     if(file_exists($filePath)){
     	include($filePath);

@@ -1,19 +1,26 @@
 <?php
-class Tracer extends Container {
-    private $s1;
-    private $s2;
+namespace gear\untils;
+class Tracer{
+    private $s = [];
     public function start(){
-        $this->s1 = microtime(true);
+        $this->s['start'] = microtime(true);
+    }
+
+    public function add($node){
+        if(empty($node)){
+            Assert::argEx("[Tracer] UnKnow Node $node");
+        }
+        $this->s[$node] = microtime(true);
     }
 
     public function end(){
-        $this->s2 = microtime(true);
+        $this->s['end'] = microtime(true);
     }
 
     //计算时间消耗，并转为毫秒
     public function finish(){
         $this->end();
-        $time = $this->s2 - $this->s1;
+        $time = $this->s['end'] - $this->s['start'];
         return round($time * 1000, 3);
     }
 

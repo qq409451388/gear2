@@ -1,5 +1,6 @@
 <?php
-class LogicEx extends LogicException
+namespace gear\exception;
+class LogicEx extends \LogicException
 {
     
 }

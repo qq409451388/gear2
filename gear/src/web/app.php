@@ -1,10 +1,19 @@
 <?php
+namespace gear\web;
+use gear\Env;
+use gear\Config;
+use gear\Container;
+use gear\untils\Assert;
+use gear\untils\Tracer;
+use gear\untils\Logger;
+use gear\exception\RuntimeEx;
+use gear\web\Interceptor;
+use gear\web\Http;
 class App extends Container{
     private $interceptors = [];
 
     protected $binds = [
         'http' => null,
-        'tracer' => null,
         'config' => null
     ];
 
@@ -14,6 +23,7 @@ class App extends Container{
      * $config project config path
      */
     public function __construct($config = ''){
+        $this->tracer = new Tracer();
         $this->start();
         $this->config = new Config($config);
     }
@@ -32,7 +42,7 @@ class App extends Container{
         }catch (RuntimeEx $e){
             $this->error = error_get_last();
             $this->dealRunTime();
-        }catch (Exception $e){
+        }catch (\Exception $e){
             $this->error = error_get_last();
             $this->dealException();
         }finally{
@@ -49,24 +59,18 @@ class App extends Container{
     }
 
     private function registerInterceptors(){
-        $interceptors = $this->config->interceptors;
-        foreach($interceptors as $interceptor){
-            $this->interceptors[] = new $interceptor;
-        }
+        $this->interceptors = Interceptor::get($this->config->interceptors);
     }
 
     private function invokeBefore(){
         foreach($this->interceptors as $interceptor){
-            if(!$interceptor instanceof IBaseInterceptor){
-                Assert::runtimeEx("[Interceptor]Unknow Class $interceptor");
-            }
             $interceptor->before();
         }
     }
 
     private function invokeAfter(){
         foreach($this->interceptors as $interceptor){
-            if(!$interceptor instanceof IBaseInterceptor){
+            if(!$interceptor instanceof Interceptor){
                 Assert::runtimeEx("[Interceptor]Unknow Class $interceptor");
             }
             $interceptor->after();

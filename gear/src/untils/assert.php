@@ -1,5 +1,5 @@
 <?php
-
+namespace gear\untils;
 class Assert
 {
     const DEFAULT_MSG = '与预期不符！';
