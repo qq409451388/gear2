@@ -1,5 +1,6 @@
 <?php
-const LIB_PATH = __DIR__.'/src';
+const LIB_PATH = __DIR__;
+const SRC_PATH = LIB_PATH.'/src';
 
 //dev prod
 const ENV = 'dev';
@@ -35,7 +36,7 @@ function getFilePathHash(){
         return include($file);
 	}else{
 		$hash = [];
-        getFilePaths(LIB_PATH, 'gear',$hash);
+        getFilePaths(SRC_PATH, 'gear',$hash);
         file_put_contents(__DIR__."/pathCache.php", "<?php return ".var_export($hash, true).';');
         return $hash;
 	}
