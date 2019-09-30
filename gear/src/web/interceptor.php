@@ -5,6 +5,7 @@ use gear\web\IBaseInterceptor;
 
 class Interceptor implements IBaseInterceptor{
     public static function get(Array $interceptors){
+        $n = [];
         foreach($interceptors as $interceptor){
             if(!class_exists($interceptor)){
                 Assert::runtimeEx("[Interceptor]Unknow Class $interceptor");
