@@ -1,9 +1,4 @@
 <?php
-namespace gear\web;
-
-use gear\Container;
-use gear\untils\Assert;
-
 class Http
 {
     private $request;

@@ -1,15 +1,4 @@
 <?php
-namespace gear\web;
-
-use gear\Env;
-use gear\Config;
-use gear\Container;
-use gear\untils\Assert;
-use gear\untils\Tracer;
-use gear\untils\Logger;
-use gear\web\Interceptor;
-use gear\web\Http;
-
 class App
 {
     private $interceptors = [];

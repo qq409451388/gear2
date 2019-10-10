@@ -1,6 +1,4 @@
 <?php
-namespace gear\web;
-
 class Response{
     public $code = 0;
     public $msg = '';

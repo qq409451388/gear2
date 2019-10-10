@@ -1,8 +1,4 @@
 <?php
-namespace gear;
-
-use gear\untils\Assert;
-
 class Container
 {
     private static $map = [];

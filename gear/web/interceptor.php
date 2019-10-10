@@ -1,8 +1,4 @@
 <?php
-namespace gear\web;
-use gear\untils\Assert;
-use gear\web\IBaseInterceptor;
-
 class Interceptor implements IBaseInterceptor{
     public static function get(Array $interceptors){
         $n = [];

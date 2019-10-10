@@ -1,6 +1,4 @@
 <?php
-namespace gear\web;
-
 class Request{
     public function __construct()
     {

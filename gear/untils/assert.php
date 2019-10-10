@@ -1,10 +1,4 @@
 <?php
-namespace gear\untils;
-
-use gear\exception\LogicEx;
-use gear\exception\InvalidArgumentEx;
-use gear\exception\RuntimeEx;
-
 class Assert
 {
     const DEFAULT_MSG = '与预期不符！';

@@ -1,6 +1,4 @@
 <?php
-namespace gear\web;
-
 Abstract class BaseController{
 	protected $request;
 	protected $response;

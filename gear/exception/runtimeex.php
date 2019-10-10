@@ -1,6 +1,5 @@
 <?php
-namespace gear\exception;
-class RuntimeEx extends \RuntimeException
+class RuntimeEx extends RuntimeException
 {
     
 }

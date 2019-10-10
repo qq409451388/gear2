@@ -1,8 +1,4 @@
 <?php
-namespace gear\untils;
-
-use gear\untils\Logger;
-
 class Tracer
 {
     private $s = [];

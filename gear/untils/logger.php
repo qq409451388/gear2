@@ -1,8 +1,4 @@
 <?php
-namespace gear\untils;
-
-use gear\untils\DataTransfer;
-
 class Logger
 {
     const LOG_PATH = BASE_PATH.'logs/';
