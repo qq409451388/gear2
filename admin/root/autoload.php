@@ -1,7 +1,7 @@
 <?php
-const SRC_PATH = __DIR__.'/../';
+const BASE_PATH = __DIR__.'/../../';
 const PROJ = 'admin';
-const GEAR_PATH = SRC_PATH.'../gear/';
+const GEAR_PATH = BASE_PATH.'/gear/';
 //dev prod
 const ENV = 'dev';
 function getFilePaths($path = __DIR__, $folder = 'gear', &$hash = [], $filter = [])
@@ -41,7 +41,7 @@ function getFilePathHash()
         return include($file);
 	}else{
 		$hash = [];
-        getFilePaths(SRC_PATH, PROJ,$hash, ['root']);
+        getFilePaths(BASE_PATH.PROJ, PROJ,$hash, ['root']);
         getFilePaths(GEAR_PATH, 'gear',$hash);
         file_put_contents(__DIR__."/pathCache.php", "<?php return ".var_export($hash, true).';');
         return $hash;

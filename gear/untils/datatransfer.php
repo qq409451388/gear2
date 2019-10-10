@@ -1,4 +1,6 @@
 <?php
+namespace gear\untils;
+
 class DataTransfer{
 	public static function toArray($obj){
 		$arr = [];
@@ -82,4 +84,20 @@ class DataTransfer{
     	return str_replace('/', '\\/', str_replace('"', '\\"', str_replace("\n", "\\n", str_replace("\r", "", $str))));
 	}
 
+
+    /**
+     *   只替换指定字符串在目标字符串的第一次出现
+     * @param $needle
+     * @param $replace
+     * @param $haystack
+     * @return mixed
+     */
+    public static function str_replace_once($needle, $replace, $haystack)
+    {
+        $pos = strpos($haystack, $needle);
+        if ($pos === false) {
+            return $haystack;
+        }
+        return substr_replace($haystack, $replace, $pos, strlen($needle));
+    }
 }

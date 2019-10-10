@@ -34,6 +34,6 @@ class Tracer
             $msg = date('Y/m/d H:i:s ').$msg.'  ';
         }
         $msg .= '[consume:'.$time.' ms]'.PHP_EOL;
-        Logger::save($msg, __CLASS__);
+        Logger::save($msg);
     }
 }

@@ -1,8 +1,11 @@
 <?php
 namespace gear\untils;
+
+use gear\untils\DataTransfer;
+
 class Logger
 {
-    const LOG_PATH = LIB_PATH.'/logs/';
+    const LOG_PATH = BASE_PATH.'logs/';
     //仅记录
     const TYPE_RECORD = 'record';
     //关键性数据储存
@@ -32,7 +35,7 @@ class Logger
         self::write($msg, self::TYPE_EXCEPTION);
     }
 
-    public static function save($msg, $name){
+    public static function save($msg, $name = ''){
         self::write($msg, self::TYPE_DATA, $name);
     }
 
@@ -60,7 +63,7 @@ class Logger
 
     private static function matchTemplate($template, $args){
         foreach($args as $arg) {
-            $template = XString::str_replace_once('{}', $arg, $template);
+            $template = DataTransfer::str_replace_once('{}', $arg, $template);
         }
         return $template.PHP_EOL;
     }
