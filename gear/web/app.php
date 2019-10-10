@@ -38,7 +38,7 @@ class App
         try{
             $this->registerInterceptors();
             $this->invokeBefore();
-            $this->http->start();
+            $this->http->startWebApp();
             $this->http->send();
             $this->invokeAfter();
         }catch (RuntimeEx $e){

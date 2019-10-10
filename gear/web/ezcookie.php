@@ -1,4 +1,6 @@
 <?php
+namespace gear\web;
+
 class EzCookie{
     public static function set($key, $value, $livetime = 2592000, $domain = 'poethan.cn', $path = '/'){
         if ($livetime >= 0) {

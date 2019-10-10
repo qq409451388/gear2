@@ -10,7 +10,7 @@ class Container
 	public static function get($className)
     {
 	    if(empty($className)){
-            Assert::argEx("[Container]no class $name", -1);
+            Assert::argEx("[Container]no class $className", -1);
         }
         if (empty(self::$map[$className])) {
             self::register($className);
@@ -18,7 +18,7 @@ class Container
         return self::$map[$className];    
     }
 
-    public function register($className, $object = null)
+    public static function register($className, $object = null)
     {
         if(!is_null($object)){
             self::$map[$className] = $object;
