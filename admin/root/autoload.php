@@ -1,17 +1,21 @@
 <?php
-const LIB_PATH = __DIR__;
-const SRC_PATH = LIB_PATH.'/src';
-
+const SRC_PATH = __DIR__.'/../';
+const PROJ = 'admin';
+const GEAR_PATH = SRC_PATH.'../gear/';
 //dev prod
 const ENV = 'dev';
-function getFilePaths($path = __DIR__, $folder = 'gear', &$hash = []){
+function getFilePaths($path = __DIR__, $folder = 'gear', &$hash = [], $filter = [])
+{
 	//过滤掉点和点点
 	$map = array_filter(scandir($path), function($var){
         return $var[0] != '.';
 	});
-	foreach($map as $item){
+	foreach ($map as $item) {
 		$curPath = $path.'/'.$item;
 		if(is_dir($curPath)){
+		    if(in_array($item, $filter)){
+		        continue;
+            }
 			if($item == '.' || $item == '..'){
 				continue;
 			}
@@ -30,13 +34,15 @@ function getFilePaths($path = __DIR__, $folder = 'gear', &$hash = []){
 	return $hash;
 }
 
-function getFilePathHash(){
+function getFilePathHash()
+{
 	$file = __DIR__.'/pathCache.php';
 	if(file_exists($file) && ENV != 'dev'){
         return include($file);
 	}else{
 		$hash = [];
-        getFilePaths(SRC_PATH, 'gear',$hash);
+        getFilePaths(SRC_PATH, PROJ,$hash, ['root']);
+        getFilePaths(GEAR_PATH, 'gear',$hash);
         file_put_contents(__DIR__."/pathCache.php", "<?php return ".var_export($hash, true).';');
         return $hash;
 	}
