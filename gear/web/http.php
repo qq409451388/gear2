@@ -1,21 +1,26 @@
 <?php
 namespace gear\web;
-use gear\Container;
+
 use gear\untils\Assert;
-class HTTP extends Container{
-    public function start(){
+
+class Http
+{
+    public function start()
+    {
         try{
             $this->parseUri();
         }catch (\Exception $e){
-
+            var_dump($e);
         }
     }
 
-    public function send(){
+    public function send()
+    {
 
     }
 
-    private function parseUri(){
+    private function parseUri()
+    {
         $parseArr = parse_url($_SERVER['REQUEST_URI']);
         $path = array_filter(explode('/', $parseArr['path']));
 
