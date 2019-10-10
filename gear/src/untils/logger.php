@@ -37,6 +37,9 @@ class Logger
     }
 
     private static function write($msg, $type, $fileName = ''){
+        if(empty($msg)){
+            return;
+        }
         $dirPath = self::LOG_PATH.$type.'/';
 
         if(!is_dir($dirPath)) {

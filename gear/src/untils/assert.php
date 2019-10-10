@@ -1,5 +1,10 @@
 <?php
 namespace gear\untils;
+
+use gear\exception\LogicEx;
+use gear\exception\InvalidArgumentEx;
+use gear\exception\RuntimeEx;
+
 class Assert
 {
     const DEFAULT_MSG = '与预期不符！';
@@ -69,7 +74,7 @@ class Assert
 
     public static function exception($msg, $code = -1)
     {
-        throw new Exception($msg, $code);
+        throw new \Exception($msg, $code);
     }
 
     public static function argEx($msg, $code = -1)

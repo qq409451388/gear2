@@ -1,6 +1,10 @@
 <?php
 namespace gear\untils;
-class Tracer{
+
+use gear\untils\Logger;
+
+class Tracer
+{
     private $s = [];
     public function start(){
         $this->s['start'] = microtime(true);

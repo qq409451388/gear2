@@ -1,18 +1,30 @@
 <?php
 namespace gear;
-use gear\untils\Assert;
-class Container{
-    private $ins;
-	protected $binds = [];
 
-	protected function get($name):Container{
-	    if(!array_key_exists($name, $this->binds)){
-            Assert::argEx("[Container]no binds $name", -1);
+use gear\untils\Assert;
+
+class Container
+{
+    private static $map = [];
+
+	public static function get($className)
+    {
+	    if(empty($className)){
+            Assert::argEx("[Container]no class $name", -1);
         }
-	    if(!$this->binds[$name] instanceof Container){
-	        $this->binds[$name] = new $name;
+        if (empty(self::$map[$className])) {
+            self::register($className);
         }
-        return $this->binds[$name];
+        return self::$map[$className];    
+    }
+
+    public function register($className, $object = null)
+    {
+        if(!is_null($object)){
+            self::$map[$className] = $object;
+        }else{
+            self::$map[$className] = new $className;
+        } 
     }
 
 }

@@ -1,20 +1,22 @@
 <?php
 namespace gear\web;
+
 use gear\Env;
 use gear\Config;
 use gear\Container;
 use gear\untils\Assert;
 use gear\untils\Tracer;
 use gear\untils\Logger;
-use gear\exception\RuntimeEx;
 use gear\web\Interceptor;
 use gear\web\Http;
-class App extends Container{
+
+class App
+{
     private $interceptors = [];
 
     protected $binds = [
-        'http' => null,
-        'config' => null
+        'http' => Http::class,
+        'config' => Config::class
     ];
 
     private $error = [];
@@ -102,7 +104,8 @@ class App extends Container{
     }
 
     public function __get($name){
-        return $this->get($name);
+        $className = $this->binds[$name] ?? '';
+        return Container::get($className);
     }
 
     public function __destruct(){
