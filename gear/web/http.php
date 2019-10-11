@@ -11,36 +11,27 @@ class Http
         $this->response = Container::get(Response::class);
     }
 
-    public function startWebApp()
+    public function initWebApp()
     {
-        try{
-            $this->request->filter();
-            $this->parseUri4WebApp();
-            $this->invoke();
-        }catch (\Exception $e){
-            var_dump($e);
-        }
+        $this->request->filter();
+        $this->parseUri4WebApp();
+        $this->invoke();
+        $this->rander();
     }
 
-    public function startApi()
+    public function initApi()
     {
-        try{
-            $this->parseUri4WebApp();
-            $res = $this->invoke();
-            if(self::DIRECT_OUTPUT != $res){
-                Assert::runtimeEx('[Http]no output'); 
-            }
-        }catch(\Exception $e){
-            
-        }    
+        $this->parseUri4WebApp();
+        $res = $this->invoke();
+        if(self::DIRECT_OUTPUT != $res){
+            Assert::runtimeEx('[Http]no output'); 
+        }
     }
 
     public function rander()
     {
         $template = $this->request->getTemplate();
-        var_dump($this->response);
-        die;
-        //extract($this->response->getData());
+        extract($this->response->getData());
         ob_start();
         include($template);
         ob_flush();

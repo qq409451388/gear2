@@ -9,7 +9,8 @@ class Response
 		$this->data[$name] = $value;
 	}
 
-	public function getData(){
+	public function getData():Array
+    {
 		return $this->data;
 	}
 
@@ -18,7 +19,7 @@ class Response
         return $this->code;    
     }
 
-    public function setData($data)
+    public function setData(Array $data)
     {
         $this->data = $data;    
     }

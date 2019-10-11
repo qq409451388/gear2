@@ -27,8 +27,7 @@ class App
         try{
             $this->registerInterceptors();
             $this->invokeBefore();
-            $this->http->startWebApp();
-            $this->http->rander();
+            $this->http->initWebApp();
             $this->invokeAfter();
         }catch (RuntimeEx $e){
             $this->error = $e;
@@ -37,7 +36,9 @@ class App
             $this->error = error_get_last();
             $this->dealException();
         }finally{
-            Logger::exception($this->error);
+            if(!empty($this->error)){
+                Logger::exception(print_r($this->error, true));
+            }
         }
     }
 
@@ -70,7 +71,7 @@ class App
 
     private function dealRunTime(){
         if(Env::isDev()){
-            var_dump($this->error);die;
+            return;
             extract($this->error);
             ob_start();
             include($this->exceptionUrl());
@@ -100,6 +101,6 @@ class App
 
     public function __destruct(){
         $this->tracer->finish();
-        $this->tracer->log('app consume');
+        $this->tracer->log($this->config->app.' app consume');
     }
 }

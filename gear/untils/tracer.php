@@ -29,7 +29,7 @@ class Tracer
         if(!empty($msg)) {
             $msg = date('Y/m/d H:i:s ').$msg.'  ';
         }
-        $msg .= '[consume:'.$time.' ms]'.PHP_EOL;
+        $msg .= '[consume:'.$time.' ms]';
         Logger::save($msg);
     }
 }

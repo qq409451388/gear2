@@ -53,6 +53,7 @@ class Logger
         if(self::TYPE_RECORD == $type) {
             $msg = date('Y/m/d H:i:s  ').$msg;
         }
+        $msg .= PHP_EOL;
         fwrite($fp, $msg);
         fclose($fp);
     }
@@ -61,6 +62,6 @@ class Logger
         foreach($args as $arg) {
             $template = DataTransfer::str_replace_once('{}', $arg, $template);
         }
-        return $template.PHP_EOL;
+        return $template;
     }
 }

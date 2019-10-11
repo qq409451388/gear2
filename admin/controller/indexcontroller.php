@@ -3,6 +3,7 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        $this->setData('data', 123);        
+        usleep(123676);
+        $this->setResponse('title', 'HelloWorld');        
     }
 }
