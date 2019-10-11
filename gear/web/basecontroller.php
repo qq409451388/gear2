@@ -4,13 +4,9 @@ Abstract class BaseController{
 	protected $response;
 	const DIRECT_OUTPUT = 1;
 
-	public function __construct($controller, $action){
-		$this->response = Loadder::get('Response');
-		$this->request = Loadder::get('Request');
-		$this->controller = $controller;
-		$this->action = $action;
-		//TODO 自定义模板
-		$this->template = $this->getTemplate();
+	public function __construct(){
+        $this->request = Container::get(Request::class);
+        $this->response = Container::get(Response::class);
 	}
 
 	public function setResponse($name, $value){
@@ -37,10 +33,6 @@ Abstract class BaseController{
 		return $this->request->getData();
 	}
 
-    public function getUserName(){
-        return EzCookie::getUserName(); 
-    }
-
     public function setData($data)
     {
         $this->response->data = $data;    
@@ -51,4 +43,5 @@ Abstract class BaseController{
         $this->response->code = $err->getCode();
         $this->response->msg = $err->getMsg();
     }
+
 }

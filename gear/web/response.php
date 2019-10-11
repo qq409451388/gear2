@@ -1,5 +1,6 @@
 <?php
-class Response{
+class Response
+{
     public $code = 0;
     public $msg = '';
 	public $data = [];
@@ -17,8 +18,14 @@ class Response{
         return $this->code;    
     }
 
+    public function setData($data)
+    {
+        $this->data = $data;    
+    }
+
     public function getMsg()
     {
         return $this->msg; 
     }
+
 }

@@ -28,10 +28,10 @@ class App
             $this->registerInterceptors();
             $this->invokeBefore();
             $this->http->startWebApp();
-            $this->http->send();
+            $this->http->rander();
             $this->invokeAfter();
         }catch (RuntimeEx $e){
-            $this->error = error_get_last();
+            $this->error = $e;
             $this->dealRunTime();
         }catch (\Exception $e){
             $this->error = error_get_last();
@@ -70,6 +70,7 @@ class App
 
     private function dealRunTime(){
         if(Env::isDev()){
+            var_dump($this->error);die;
             extract($this->error);
             ob_start();
             include($this->exceptionUrl());

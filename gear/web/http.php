@@ -3,6 +3,7 @@ class Http
 {
     private $request;
     private $response;
+    const DIRECT_OUTPUT = 1;
 
     public function __construct()
     {
@@ -13,16 +14,47 @@ class Http
     public function startWebApp()
     {
         try{
-            list($controller, $action) = $this->parseUri4WebApp();
-            $this->invoke($controller, $action);
+            $this->request->filter();
+            $this->parseUri4WebApp();
+            $this->invoke();
         }catch (\Exception $e){
             var_dump($e);
         }
     }
 
-    public function send()
+    public function startApi()
     {
+        try{
+            $this->parseUri4WebApp();
+            $res = $this->invoke();
+            if(self::DIRECT_OUTPUT != $res){
+                Assert::runtimeEx('[Http]no output'); 
+            }
+        }catch(\Exception $e){
+            
+        }    
+    }
 
+    public function rander()
+    {
+        $template = $this->request->getTemplate();
+        var_dump($this->response);
+        die;
+        //extract($this->response->getData());
+        ob_start();
+        include($template);
+        ob_flush();
+    }
+
+    public function invoke()
+    {
+        if(empty($this->request->do)){
+            Assert::runtimeEx('[Request]empty do');    
+        }
+        $className = $this->request->do[0];
+        $funcName = $this->request->do[1];
+        $obj = new $className;
+        return call_user_func_array([$obj, $funcName], []);    
     }
 
     private function parseUri4WebApp()
@@ -49,12 +81,6 @@ class Http
         if(!in_array($funcName, $funcNames)){
             Assert::runtimeEx('[Http]action不存在！'.$funcName);
         }
-        return [$className, $funcName];
-    }
-
-    private function invoke($class, $action)
-    {
-        $obj = new $class;
-        return call_user_func_array([$obj, $action], []);
+        $this->request->setInvoke($className, $funcName);
     }
 }
