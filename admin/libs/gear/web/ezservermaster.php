@@ -28,7 +28,7 @@ class EzServerMaster{
         return $this->config[$key];
     }
 
-    public function run($host, $port, $root){
+    public function run(){
         //创建socket套接字
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         //设置阻塞模式
