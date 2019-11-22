@@ -1,7 +1,7 @@
 <?php return array (
   'indexcontroller' => '/home/www/gear2/admin/root/..//controller/indexcontroller.php',
   'mywebapp' => '/home/www/gear2/admin/root/..//mywebapp.php',
-  'index' => '/home/www/gear2/admin/root/..//templates/index/index.php',
+  'index' => '/home/www/gear2/admin/root/..//templates/index/app.php',
   'config' => '/home/www/gear2/admin/root/../..//gear//config.php',
   'container' => '/home/www/gear2/admin/root/../..//gear//container.php',
   'basedao' => '/home/www/gear2/admin/root/../..//gear//dao/basedao.php',

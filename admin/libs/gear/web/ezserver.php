@@ -3,10 +3,6 @@
  * Http 服务器类
  */
 class EzServer{
-    private $host;
-    private $port;
-    private $_root;
-
     public $mime_types = array(
         'avi' => 'video/x-msvideo',
         'bmp' => 'image/bmp',
@@ -32,47 +28,19 @@ class EzServer{
     );
 
     /**
-     * @param string $host 监听地址
-     * @param int $port 监听端口
-     * @param string $_root 网站根目录
-     * @return EzServer
-     */
-    public function init($host,$port,$_root){
-        $this->host = $host;
-        $this->port = $port;
-        $this->_root = $_root;
-        return $this;
-    }
-
-    /**
      * 启动http服务
      */
     public function start(){
-        //创建socket套接字
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        //设置阻塞模式
-        socket_set_block($socket);
-        //为套接字绑定ip和端口
-        socket_bind($socket,$this->host,$this->port);
-        //监听socket
-        socket_listen($socket,4);
-
-        while(true)
-        {
-            //接收客户端请求
-            if($msgsocket = socket_accept($socket)){
-                //读取请求内容
-                $buf = socket_read($msgsocket, 9024);
-                //获取接收文件类型
-                $accept = $this->getAccept($buf);
-                //获取访问得文件类型
-                $path = $this->getPath($buf);
-                //检查请求类型
-                $this->check($accept);
-                $content = $this->getResponse($path);
-                socket_write($msgsocket,$content,strlen($content));
-                socket_close($msgsocket);
-            }
+        while(true){
+            //获取接收文件类型
+            $accept = $this->getAccept($buf);
+            //获取访问得文件类型
+            $path = $this->getPath($buf);
+            //检查请求类型
+            $this->check($accept);
+            $content = $this->getResponse($path);
+            socket_write($msgsocket,$content,strlen($content));
+            socket_close($msgsocket);
         }
     }
 
