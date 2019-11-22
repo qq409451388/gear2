@@ -1,7 +1,5 @@
 <?php
-const BASE_PATH = __DIR__.'/../../';
-const SRC_PATH = __DIR__.'/../';
-const GEAR_PATH = BASE_PATH.'/gear/';
+const BASE_PATH = __DIR__ ;
 //dev prod
 const ENV = 'dev';
 function getFilePaths($path = __DIR__, &$hash = [], $filter = [])
@@ -34,14 +32,13 @@ function getFilePaths($path = __DIR__, &$hash = [], $filter = [])
 
 function getFilePathHash()
 {
-	$file = __DIR__.'/pathCache.php';
+	$file = __DIR__ . '/pathCache.php';
 	if(file_exists($file) && ENV != 'dev'){
         return include($file);
 	}else{
 		$hash = [];
-        getFilePaths(SRC_PATH, $hash, ['root']);
-        getFilePaths(GEAR_PATH, $hash);
-        file_put_contents(__DIR__."/pathCache.php", "<?php return ".var_export($hash, true).';');
+        getFilePaths(BASE_PATH, $hash);
+        file_put_contents(__DIR__ . "/pathCache.php", "<?php return ".var_export($hash, true).';');
         return $hash;
 	}
 }
