@@ -101,7 +101,7 @@ class HTTP{
 
     private function check($type){
         if(!in_array($type, array_values($this->mime_types))){
-            Logger::console("[Server UnSupport Type : {$type}]");
+            Logger::console("[EzServer] UnSupport Type : {$type}");
         }
     }
 
@@ -150,10 +150,10 @@ class HTTP{
 
     private function getStaticResponse($path):String{
         if(!$this->getRealPath($path)) {
-            Logger::console("[Server Not Found]");
+            return $this->getHeaders(404, "Not Found");
         }
         if(!is_readable($this->getRealPath($path))){
-            Logger::console("[Server Unauthorized]");
+            return $this->getHeaders(403, "Unauthorized");
         }
         $realPath = $this->getRealPath($path);
         $fileContent = file_exists($realPath) ? file_get_contents($realPath) : ' ';
