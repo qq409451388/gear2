@@ -74,7 +74,7 @@ class HTTP{
                 //获取web路径
                 $webPath = $this->getPath($buf);
                 list($path, $args) = $this->parseUri($webPath);
-                $content = $this->getHeaders(200,"OK",$this->getResponse($path, $args), $this->getMime($path));
+                $content = $this->getResponse($path, $args);
                 socket_write($msgsocket, $content, strlen($content));
                 socket_close($msgsocket);
             }
@@ -113,7 +113,7 @@ class HTTP{
      * @param string $content_type 发送的内容类型
      * @return string
      **/
-    public function getHeaders($code,$status,$content="",$content_type="text/html;charset=utf-8"){
+    public function getHeaders($code,$status,$content="",$content_type="text/html;charset=utf-8"):String{
         $header = '';
         $header .= "HTTP/1.1 {$code} {$status}\r\n";
         $header .= "Date: ".gmdate('D, d M Y H:i:s T')."\r\n";
@@ -125,13 +125,18 @@ class HTTP{
 
     private function getResponse($path, $params):String{
         if(empty($path) || empty($params)){
-            return '';
+            return $this->getHeaders(404, "Not Found");
         }
         $item = $this->judgePath($path);
-        if(null == $item && !empty($this->_root)){
-            return $this->getStaticResponse($path);
+        if(null == $item){
+            if(empty($this->_root)){
+                return $this->getHeaders(404, "Not Found");
+            }
+            $content = $this->getStaticResponse($path);
+        }else{
+            $content = $this->getDynamicResponse($item, $params);
         }
-        return $this->getDynamicResponse($item, $params);
+        return $this->getHeaders(200,"OK", $content, $this->getMime($path));
     }
 
     private function judgePath($path){
