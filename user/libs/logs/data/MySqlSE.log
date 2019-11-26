@@ -1,0 +1,2 @@
+2019/11/26 04:08:22 select * from cduserrefs limit 1  [consume:15.52 ms]
+2019/11/26 04:08:37 select * from cduserrefs limit 1  [consume:57.44 ms]
