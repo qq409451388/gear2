@@ -107,36 +107,29 @@ class HTTP{
 
     /**
      * 组装消息头信息模板
-     * @param int $code 状态码
-     * @param string $status 状态名称
+     * @param HttpStatus $httpStatus 状态
      * @param string $content 发送的文本内容
-     * @param string $content_type 发送的内容类型
+     * @param string $contentType 发送的内容类型
      * @return string
      **/
-    public function getHeaders($code,$status,$content="",$content_type="text/html;charset=utf-8"):String{
-        $header = '';
-        $header .= "HTTP/1.1 {$code} {$status}\r\n";
-        $header .= "Date: ".gmdate('D, d M Y H:i:s T')."\r\n";
-        $header .= "Content-Type: {$content_type}\r\n";
-        $header .= "Content-Length: ".strlen($content)."\r\n\r\n";//必须2个\r\n表示头部信息结束
-        $header .= $content;
-        return $header;
+    public function getHeaders(HttpStatus $httpStatus, $content = "", $contentType = "text/html"):String{
+        return (new EzHeader($httpStatus, $content, $contentType))->get();
     }
 
     private function getResponse($path, $params):String{
         if(empty($path) || empty($params)){
-            return $this->getHeaders(404, "Not Found");
+            return $this->getHeaders(HttpStatus::OK());
         }
         $item = $this->judgePath($path);
         if(null == $item){
             if(empty($this->_root)){
-                return $this->getHeaders(404, "Not Found");
+                return $this->getHeaders(HttpStatus::NOT_FOUND());
             }
             $content = $this->getStaticResponse($path);
         }else{
             $content = $this->getDynamicResponse($item, $params);
         }
-        return $this->getHeaders(200,"OK", $content, $this->getMime($path));
+        return $this->getHeaders(HttpStatus::OK(), $content, $this->getMime($path));
     }
 
     private function judgePath($path){
@@ -150,10 +143,10 @@ class HTTP{
 
     private function getStaticResponse($path):String{
         if(!$this->getRealPath($path)) {
-            return $this->getHeaders(404, "Not Found");
+            return $this->getHeaders(HttpStatus::NOT_FOUND());
         }
         if(!is_readable($this->getRealPath($path))){
-            return $this->getHeaders(403, "Unauthorized");
+            return $this->getHeaders(HttpStatus::FORBIDDEN());
         }
         $realPath = $this->getRealPath($path);
         $fileContent = file_exists($realPath) ? file_get_contents($realPath) : ' ';
