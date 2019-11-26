@@ -1,9 +1,9 @@
 {
     "hdfguohan":{
-        "host":"smtp.exmail.qq.com",
-        "port":"465",
-        "userName":"guohan@haodf.com",
-        "passWord":"9RrLsj3cHrjE8f8B",
-        "from":"guohan@haodf.com"
+        "host":"",
+        "port":"",
+        "userName":"",
+        "passWord":"",
+        "from":""
     }
 }
