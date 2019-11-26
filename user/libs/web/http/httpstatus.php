@@ -26,4 +26,16 @@ class HttpStatus
     public static function FORBIDDEN(){
         return new self(403, "Forbidden");
     }
+
+    public static function INTERNAL_SERVER_ERROR(){
+        return new self(500, "Internal Server Error");
+    }
+
+    public static function BAD_GATEWAY(){
+        return new self(502, "Bad Gateway");
+    }
+
+    public static function GATEWAY_TIMEOUT(){
+        return new self(504, "Gateway Timeout");
+    }
 }

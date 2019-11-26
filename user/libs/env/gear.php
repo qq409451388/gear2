@@ -101,7 +101,6 @@ class Gear
         if(null == $obj){
             return '{}';
         }
-        $res = call_user_func_array([$obj,$item->getMethod()], $params);
-        return json_encode($res);
+        return call_user_func_array([$obj,$item->getMethod()], $params)->toJson();
     }
 }

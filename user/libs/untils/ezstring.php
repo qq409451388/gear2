@@ -413,4 +413,8 @@ class EzString
         }
         return substr_replace($haystack, $replace, $pos, strlen($needle));
     }
+
+    public static function encodeJson($obj){
+        return json_encode($obj) ?? '{}';
+    }
 }
