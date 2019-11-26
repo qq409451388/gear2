@@ -13,9 +13,9 @@ class PictureService
     /**
      * @GetMapping("/get")
      */
-    public function getPicture($id):HttpResult{
+    public function getPicture($id):EzHttpResponse{
         $data = $this->pictureDao->getPictureOne($id);
-        return HttpResult::OK($data);
+        return EzHttpResponse::OK($data);
     }
 
     public function getAll($id){

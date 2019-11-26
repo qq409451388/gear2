@@ -1,5 +1,5 @@
 <?php
-class HttpResult
+class EzHttpResponse
 {
     public $errCode;
     public $data;
