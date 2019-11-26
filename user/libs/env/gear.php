@@ -3,9 +3,11 @@ class Gear
 {
     private $objects = [];
     private $mapper;
+    private $annotation;
 
     public function run(Array $hash){
         $this->mapper = Mapper::init();
+        $this->annotation = EzAnnotation::init();
         $this->initObjects($hash);
         return $this;
     }
@@ -51,33 +53,8 @@ class Gear
         return $dependents;
     }
 
-    private function getAnnotation(ReflectionClass $reflection){
-        $doc = $reflection->getDocComment();
-        if(!$doc){
-            return;
-        }
-        $matched = preg_match('/@RequestMapping\(\"\s*([^\s]*)\"\)/i', $doc, $classMatch);
-        if(!$matched){
-           return;
-        }
-        $methods = $reflection->getMethods();
-        foreach($methods as $method){
-            $doc = $method->getDocComment();
-            if(!$doc){
-                continue;
-            }
-            $matched = preg_match('/@GetMapping\(\"\s*([^\s]*)\"\)/i', $doc, $tmpMethodMatch);
-            if(!$matched){
-                continue;
-            }
-            $tmp = $classMatch[1].$tmpMethodMatch[1];
-            Logger::console("[create mapping]".$tmp);
-            $this->saveMapping($tmp, new MapItem($reflection->getName(), $method->getName()));
-        }
-    }
-
     private function registerDoc(ReflectionClass $reflection){
-        $this->getAnnotation($reflection);
+        EzAnnotation::init()->getAllAnnotation($reflection);
     }
 
     private function saveObject($key, $val):void{
@@ -88,18 +65,22 @@ class Gear
         return $this->objects[$key] ?? null;
     }
 
-    private function saveMapping($key, MapItem $val):void{
-        $this->mapper->save($key, $val);
-    }
-
     public function getMapping($key){
         return $this->mapper->get($key);
     }
 
+    //TODO
+    public function invokeInterceptor():bool{
+        return true;
+    }
+
     public function invokeMethod(MapItem $item, Array $params):String{
+        if(!$this->invokeInterceptor()){
+            return EzHttpResponse::EMPTY_RESPONSE;
+        }
         $obj = $this->getObject(strtolower($item->getService()));
         if(null == $obj){
-            return '{}';
+            return EzHttpResponse::EMPTY_RESPONSE;
         }
         return call_user_func_array([$obj,$item->getMethod()], $params)->toJson();
     }

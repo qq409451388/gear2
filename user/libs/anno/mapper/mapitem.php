@@ -1,5 +1,5 @@
 <?php
-class MapItem
+class MapItem implements AnnoItem
 {
     private $service;
     private $method;

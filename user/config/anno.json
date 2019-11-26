@@ -1,0 +1,3 @@
+{
+  "http": {"class": ["/@RequestMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"], "method": ["/@GetMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"]}
+}

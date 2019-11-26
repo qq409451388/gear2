@@ -1,6 +1,7 @@
 <?php
 class EzString
 {
+    public const EMPTY_JSON_OBJ = "{}";
 
     /** 尝试把其他编码装换成utf8
      * @param $str
@@ -415,6 +416,6 @@ class EzString
     }
 
     public static function encodeJson($obj){
-        return json_encode($obj) ?? '{}';
+        return json_encode($obj) ?? self::EMPTY_JSON_OBJ;
     }
 }
