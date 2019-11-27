@@ -3,7 +3,7 @@ class Mapper implements IAnno
 {
     private static $ins;
     private $mapping = [];
-    public static function init():Mapper{
+    public static function init():IAnno{
         if(!self::$ins instanceof Mapper){
             self::$ins = new self();
         }
@@ -23,6 +23,6 @@ class Mapper implements IAnno
     }
 
     public function get($key):AnnoItem{
-        return $this->mapping[$key] ?? null;
+        return $this->mapping[$key] ?? new NullAnnoItem();
     }
 }

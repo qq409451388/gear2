@@ -74,7 +74,10 @@ class Gear
         return true;
     }
 
-    public function invokeMethod(MapItem $item, Array $params):String{
+    public function invokeMethod(AnnoItem $item, Array $params):String{
+        if(null == $item){
+            return EzHttpResponse::EMPTY_RESPONSE;    
+        }
         if(!$this->invokeInterceptor()){
             return EzHttpResponse::EMPTY_RESPONSE;
         }
