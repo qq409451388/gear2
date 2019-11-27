@@ -1,7 +1,4 @@
 <?php
-/**
- * Http 服务器类
- */
 class HTTP{
     private $host;
     private $port;
