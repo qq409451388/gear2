@@ -75,14 +75,15 @@ class Gear
     }
 
     public function invokeMethod(AnnoItem $item, Array $params):String{
-        if(null == $item){
-            return EzHttpResponse::EMPTY_RESPONSE;    
-        }
-        if(!$this->invokeInterceptor()){
+        if(!$item->isValid()){
             return EzHttpResponse::EMPTY_RESPONSE;
         }
         $obj = $this->getObject(strtolower($item->getService()));
         if(null == $obj){
+            return EzHttpResponse::EMPTY_RESPONSE;
+        }
+        $methodName = $item->getMethod();
+        if(!$this->invokeInterceptor()){
             return EzHttpResponse::EMPTY_RESPONSE;
         }
         return call_user_func_array([$obj,$item->getMethod()], $params)->toJson();

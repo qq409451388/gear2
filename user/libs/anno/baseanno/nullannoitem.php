@@ -8,4 +8,8 @@ class NullAnnoItem implements AnnoItem
     public function getMethod(){
         return '';    
     }
+
+    public function isValid(): bool{
+        return !empty($this->getService()) && !empty($this->getMethod());
+    }
 }

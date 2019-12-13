@@ -16,4 +16,8 @@ class MapItem implements AnnoItem
     public function getMethod(){
         return $this->method;
     }
+
+    public function isValid(): bool{
+        return !empty($this->getService()) && !empty($this->getMethod());
+    }
 }
