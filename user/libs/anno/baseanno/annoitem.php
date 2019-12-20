@@ -1,7 +1,10 @@
 <?php
-Interface AnnoItem
+class AnnoItem
 {
-    public function getService();
-    public function getMethod();
-    public function isValid():bool;
+    public $class;
+    public $property;
+    public $method;
+    public $classMatch;
+    public $propertyMatch;
+    public $methodMatch;
 }

@@ -2,18 +2,18 @@
 class Gear
 {
     private $objects = [];
-    private $mapper;
     private $annotation;
 
-    public function run(Array $hash){
-        $this->mapper = Mapper::init();
-        $this->annotation = EzAnnotation::init();
-        $this->initObjects($hash);
+    public function run(Array $classess){
+        //初始化注解模板
+        $this->annotation = EzAnnotation::create()->init();
+        //初始化对象
+        $this->initObjects($classess);
         return $this;
     }
 
-    private function initObjects($hash):void{
-        foreach($hash as $class => $path) {
+    private function initObjects($classess):void{
+        foreach($classess as $class) {
             $object = $this->createObject($class);
             $this->saveObject($class, $object);
         }
@@ -25,13 +25,14 @@ class Gear
      * @return Object
      */
     private function createObject($class):Object{
-        Logger::console("[create object]{$class}");
         if(null != $this->getObject($class)){
+            Logger::console("[depend object]++{$class}");
             return $this->getObject($class);
         }
         try {
+            Logger::console("[create object]{$class}");
             $reflection = new ReflectionClass($class);
-            $this->registerDoc($reflection);
+            $this->matchMapping($reflection);
         } catch (ReflectionException $e) {
             DBC::throwEx("[create objects exception]{$e->getMessage()}");
         }
@@ -44,6 +45,7 @@ class Gear
         return null == $construct ? [] : $construct->getParameters();
     }
 
+    //创建注入对象
     private function getConstructObject(ReflectionClass $reflection):Array{
         $classes = $this->getConstructClass($reflection);
         $dependents = [];
@@ -53,20 +55,23 @@ class Gear
         return $dependents;
     }
 
-    private function registerDoc(ReflectionClass $reflection){
-        EzAnnotation::init()->getAllAnnotation($reflection);
-    }
-
     private function saveObject($key, $val):void{
         $this->objects[$key] = $val;
     }
 
     private function getObject($key){
+        $key = strtolower($key);
         return $this->objects[$key] ?? null;
     }
 
-    public function getMapping($key){
-        return $this->mapper->get($key);
+    public function matchMapping(ReflectionClass $reflection){
+        assert($this->annotation instanceof EzAnnotation);
+        $this->annotation->match("Mapper", $reflection);
+    }
+
+    public function getMapping($path){
+        assert($this->annotation instanceof EzAnnotation);
+        return $this->annotation->getAnno("Mapper")->match($path);
     }
 
     //TODO
@@ -74,18 +79,14 @@ class Gear
         return true;
     }
 
-    public function invokeMethod(AnnoItem $item, Array $params):String{
-        if(!$item->isValid()){
-            return EzHttpResponse::EMPTY_RESPONSE;
-        }
-        $obj = $this->getObject(strtolower($item->getService()));
+    public function invokeMethod($item, Array $params):String{
+        $obj = $this->getObject(strtolower(current($item)));
         if(null == $obj){
             return EzHttpResponse::EMPTY_RESPONSE;
         }
-        $methodName = $item->getMethod();
         if(!$this->invokeInterceptor()){
             return EzHttpResponse::EMPTY_RESPONSE;
         }
-        return call_user_func_array([$obj,$item->getMethod()], $params)->toJson();
+        return call_user_func_array([$obj,end($item)], $params)->toJson();
     }
 }

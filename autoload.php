@@ -39,10 +39,10 @@ function getFilePathHash()
 {
     $hash = $userHash = [];
     getFilePaths(BASE_PATH, $hash, $userHash);
-    return [$hash, $userHash];
+    return [$hash, array_keys($userHash)];
 }
 
-list($hash, $userHash) = getFilePathHash();
+list($hash, $userClass) = getFilePathHash();
 spl_autoload_register(function ($className) use($hash){
     $className = strtolower($className);
     $filePath = empty($hash[$className]) ? '' : $hash[strtolower($className)];

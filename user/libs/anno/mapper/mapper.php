@@ -1,28 +1,17 @@
 <?php
-class Mapper implements IAnno
+class Mapper extends BaseAnno implements IAnno
 {
-    private static $ins;
-    private $mapping = [];
-    public static function init():IAnno{
-        if(!self::$ins instanceof Mapper){
-            self::$ins = new self();
+    protected $map = [];
+    protected $match = [];
+    public function saveItem(AnnoItem $annoItem){
+        $key = trim($annoItem->classMatch.'/'.$annoItem->methodMatch, "/");
+        $this->match[$key] = $annoItem->class."::".$annoItem->method;
+    }
+
+    public function match($key){
+        if(empty($this->match[$key])){
+            return [];
         }
-        return self::$ins;
-    }
-
-    public function saveAll($resClass, $resMethod, $className){
-        foreach($resMethod as $methodName => $item){
-            $key = $resClass.$item;
-            $mapItem = new MapItem($className, $methodName);
-            $this->save($key, $mapItem);
-        }
-    }
-
-    public function save(String $key, AnnoItem $val):void{
-        $this->mapping[$key] = $val;
-    }
-
-    public function get($key):AnnoItem{
-        return $this->mapping[$key] ?? new NullAnnoItem();
+        return explode("::", $this->match[$key]);
     }
 }

@@ -114,27 +114,28 @@ class HTTP{
     }
 
     private function getResponse($path, $params):String{
-        if(empty($path) || empty($params)){
+        if(empty($path)){
             return $this->getHeaders(HttpStatus::OK());
         }
-        $item = $this->judgePath($path);
-        if(null == $item){
-            if(empty($this->_root)){
+        $judged = $this->judgePath($path);
+        if(empty($judged)){
+            //TODO 用作静态服务器时开启
+            /*if(empty($this->_root)){
                 return $this->getHeaders(HttpStatus::NOT_FOUND());
             }
-            $content = $this->getStaticResponse($path);
+            $content = $this->getStaticResponse($path);*/
+            $content = EzHttpResponse::EMPTY_RESPONSE;
         }else{
-            $content = $this->getDynamicResponse($item, $params);
+            $content = $this->getDynamicResponse($judged, $params);
         }
         return $this->getHeaders(HttpStatus::OK(), $content, $this->getMime($path));
     }
 
     private function judgePath($path){
-        $item = $this->gear->getMapping('/'.$path);
-        return null != $item && $item instanceof MapItem ? $item : null;
+        return $this->gear->getMapping($path);
     }
 
-    private function getDynamicResponse(MapItem $item, Array $params):String{
+    private function getDynamicResponse(Array $item, Array $params):String{
         return $this->gear->invokeMethod($item, $params);
     }
 

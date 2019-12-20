@@ -1,3 +1,13 @@
 {
-  "http": {"class": ["/@RequestMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"], "method": ["/@GetMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"]}
+  "Mapper": {
+    "CLASS": ["/@RequestMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"],
+    "PROPERTY": [],
+    "METHOD":
+      [
+        "/@GetMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i",
+        "/@PostMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i",
+        "/@PutMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i",
+        "/@DeleteMapping\\(\\\"\\s*([^\\s]*)\\\"\\)/i"
+      ]
+  }
 }
