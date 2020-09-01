@@ -1,0 +1,6 @@
+[
+  {
+    "name":"查询用户",
+    "func": "index/getUserInfo"
+  }
+]

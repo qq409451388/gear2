@@ -1,0 +1,11 @@
+{
+  "DEV":{
+    "user":"local"
+  },
+  "TEST":{
+    "user":"local"
+  },
+  "PROD":{
+    "user":"local"
+  }
+}
