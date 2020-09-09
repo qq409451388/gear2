@@ -19,7 +19,7 @@ class Response
         return $this->code;
     }
 
-    public function setData(Array $data)
+    public function setData($data)
     {
         $this->data = $data;
     }

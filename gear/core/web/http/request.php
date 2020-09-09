@@ -14,7 +14,7 @@ class Request
     }
 
     public function filter(){
-
+        return true;
     }
 
     public function isEmpty(){
