@@ -2,6 +2,7 @@
 class EzString
 {
     public const EMPTY_JSON_OBJ = "{}";
+    public const EMPTY = "";
 
     /** ���԰���������װ����utf8
      * @param $str
